@@ -1,0 +1,19 @@
+# More info at https://github.com/pi-hole/docker-pi-hole/ and https://docs.pi-hole.net/
+services:
+  pihole:
+    container_name: pihole
+    image: pihole/pihole:latest
+    network_mode: host
+    environment:
+      - TZ=America/New_York
+      - FTLCONF_webserver_api_password=${WEB_PASSWORD}
+      - FTLCONF_webserver_port=80o,443os,[::]:80o,[::]:443os
+      - FTLCONF_dns_hosts=192.168.86.2 home.lab;192.168.86.4 home.nas
+    volumes:
+      - ./config/pihole:/etc/pihole
+    cap_add:
+      - NET_ADMIN
+      - SYS_TIME
+      - SYS_NICE
+    restart: unless-stopped
+

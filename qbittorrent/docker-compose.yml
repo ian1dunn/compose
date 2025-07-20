@@ -1,0 +1,42 @@
+services:
+  gluetun:
+    image: qmcgaw/gluetun
+    container_name: gluetun
+    networks:
+      - network
+    cap_add:
+      - NET_ADMIN
+    devices:
+      - /dev/net/tun:/dev/net/tun
+    restart: unless-stopped
+    ports:
+      - 8002:8002  # QB Web UI
+    volumes:
+      - ./config/gluetun:/gluetun
+    environment:
+      - VPN_SERVICE_PROVIDER=protonvpn
+      - VPN_TYPE=wireguard
+      - WIREGUARD_PRIVATE_KEY=${WIREGUARD_PRIVATE_KEY}
+      - SERVER_COUNTRIES=United States
+      - VPN_PORT_FORWARDING=on
+      - PORT_FORWARD_ONLY=on
+      - VPN_PORT_FORWARDING_UP_COMMAND=/bin/sh -c 'wget -O- --retry-connrefused --post-data "json={\"listen_port\":{{PORTS}}}" http://127.0.0.1:8002/api/v2/app/setPreferences 2>&1'
+
+  qbittorrent:
+    image: lscr.io/linuxserver/qbittorrent
+    container_name: qbittorrent
+    network_mode: service:gluetun
+    environment:
+      - WEBUI_PORT=8002
+      - PUID=${PUID}
+      - PGID=${PGID}
+    volumes:
+      - ./config:/config  # Results in ./config/qBittorrent
+      - /mnt/mycloud/data/torrents:/data/torrents
+    depends_on:
+      - gluetun
+    restart: unless-stopped
+
+networks:
+  network:  # External network to allow other containers to interface via qbittorrent_network
+    driver: bridge

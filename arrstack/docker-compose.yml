@@ -1,0 +1,53 @@
+services:
+  sonarr:
+    image: lscr.io/linuxserver/sonarr:latest
+    container_name: sonarr
+    networks:
+      - qbittorrent_network
+      - network
+    environment:
+      - PUID=${PUID}
+      - PGID=${PUID}
+      - TZ=America/New_York
+    volumes:
+      - ./config/sonarr:/config
+      - /mnt/mycloud/data:/data
+    ports:
+      - 8101:8989
+    restart: unless-stopped
+  radarr:
+    image: lscr.io/linuxserver/radarr:latest
+    container_name: radarr
+    networks:
+      - qbittorrent_network
+      - network
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=America/New_York
+    volumes:
+      - ./config/radarr:/config
+      - /mnt/mycloud/data:/data
+    ports:
+      - 8102:7878
+    restart: unless-stopped
+  prowlarr:
+    image: lscr.io/linuxserver/prowlarr:latest
+    networks:
+      - network
+    container_name: prowlarr
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=America/New_York
+    volumes:
+      - ./config/prowlarr:/config
+    ports:
+      - 8103:9696
+    restart: unless-stopped
+
+networks:
+  qbittorrent_network:
+    external: true
+  network:
+    driver: bridge
