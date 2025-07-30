@@ -59,6 +59,15 @@ services:
     volumes:
       - ./config/overseerr:/app/config
     restart: unless-stopped
+  byparr:
+    image: ghcr.io/thephaseless/byparr:latest
+    container_name: byparr
+    restart: unless-stopped
+    networks:
+      - network
+    shm_size: 2gb
+    ports:
+      - 8105:8191
 
 networks:
   qbittorrent_network:
