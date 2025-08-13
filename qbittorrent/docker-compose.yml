@@ -36,6 +36,14 @@ services:
     depends_on:
       - gluetun
     restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5' # Limit to 0.5 CPU cores
+          memory: 2G # Limit to 2 GB of RAM
+        reservations:
+          cpus: '0.25' # Reserve 0.25 CPU cores
+          memory: 1G # Reserve 1 GB of RAM
 
 networks:
   network:  # External network to allow other containers to interface via qbittorrent_network

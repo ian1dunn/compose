@@ -12,7 +12,7 @@ services:
       - APP_KEY=${APP_KEY}
       - DB_CONNECTION=sqlite
       - PUBLIC_DASHBOARD=true
-      - SPEEDTEST_SCHEDULE=0 * * * *
+      - SPEEDTEST_SCHEDULE=*/10 * * * *
       - DISPLAY_TIMEZONE=America/New_York
     volumes:
       - ./config:/config
