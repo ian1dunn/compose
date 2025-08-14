@@ -4,5 +4,4 @@
 - Fix qBittorrent resource usage
   - Possibly done, re-evaluate
 - Config backups (remove sensitive info or just keep on NAS)
-- Bazarr
 - Factorio server
