@@ -45,20 +45,6 @@ services:
     ports:
       - 8103:9696
     restart: unless-stopped
-  overseerr:
-    image: sctx/overseerr:latest
-    container_name: overseerr
-    environment:
-      - LOG_LEVEL=debug
-      - TZ=America/New_York
-      # - PORT=5055
-    networks:
-      - network
-    ports:
-      - 8104:5055
-    volumes:
-      - ./config/overseerr:/app/config
-    restart: unless-stopped
   byparr:
     image: ghcr.io/thephaseless/byparr:latest
     container_name: byparr
@@ -76,7 +62,7 @@ services:
       - PGID=$[PGID}
       - TZ=America/New_York
     volumes:
-      - ./config:/config
+      - ./config/bazarr:/config
       - /mnt/mycloud/data/media:/data/media
     ports:
       - 8106:6767

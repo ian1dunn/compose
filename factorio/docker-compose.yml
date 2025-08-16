@@ -1,0 +1,13 @@
+services:
+  factorio:
+    image: factoriotools/factorio:stable
+    container_name: factorio
+    ports:
+      - "34197:34197/udp"
+    volumes:
+      - ./config:/factorio
+    restart: unless-stopped
+    environment:
+      - DLC_SPACE_AGE=false
+      - USERNAME=${USERNAME}
+      - TOKEN=${TOKEN}
